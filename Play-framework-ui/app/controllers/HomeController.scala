@@ -26,7 +26,7 @@ class HomeController @Inject()(val messagesApi: MessagesApi) extends Controller 
   val jobTitleForm = Form(
     mapping(
       "jobTitle" -> nonEmptyText,
-      "year" -> number(min = 2011, max = 2014)
+      "year" -> number
     )(SearchForm.apply)(SearchForm.unapply)
   )
 
@@ -38,21 +38,35 @@ class HomeController @Inject()(val messagesApi: MessagesApi) extends Controller 
 
    jobTitleForm.bindFromRequest.fold(
       formWithErrors => {
-        println(formWithErrors)
+        println("in error")
         BadRequest(html.index(formWithErrors))
       },
       form => {
         val buf = scala.collection.mutable.ArrayBuffer.empty[Array[String]]
         val lines = scala.io.Source.fromFile("/Users/MengHaoHsu/Salary-analysis-using-scala/Salary-analysis/out.txt").mkString.split("\n")
         for(i <-0 until lines.length){
-          if(lines(i).toLowerCase().contains(form.jobTitle.toLowerCase())&& lines(i).toLowerCase.contains(form.year.toString())){
-            val str = scala.collection.mutable.ArrayBuffer.empty[String]
-            val tem = lines(i).split(" ");
-            for(j <-0 until tem.length){
-              val tem2 = tem(j).split(":")
-              str += tem2(1)
+          if(form.year!=0) {
+            println("year")
+            if (lines(i).toLowerCase().contains(form.jobTitle.toLowerCase()) && lines(i).toLowerCase.contains(form.year.toString())) {
+              val str = scala.collection.mutable.ArrayBuffer.empty[String]
+              val tem = lines(i).split(" ");
+              for (j <- 0 until tem.length) {
+                val tem2 = tem(j).split(":")
+                str += tem2(1)
+              }
+              buf += str.toArray
             }
-            buf += str.toArray
+          }else{
+            println("no year")
+            if (lines(i).toLowerCase().contains(form.jobTitle.toLowerCase())) {
+              val str = scala.collection.mutable.ArrayBuffer.empty[String]
+              val tem = lines(i).split(" ");
+              for (j <- 0 until tem.length) {
+                val tem2 = tem(j).split(":")
+                str += tem2(1)
+              }
+              buf += str.toArray
+            }
           }
         }
 
