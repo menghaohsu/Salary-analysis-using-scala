@@ -1,0 +1,15 @@
+@import helper._
+@(jobTitleForm: Form[model.SearchForm])(implicit messages: play.api.i18n.Messages, request: RequestHeader)
+
+@main("Welcome to Play") {
+
+ @helper.form(action = routes.HomeController.createSearch()) {
+
+  @helper.inputText(jobTitleForm("jobTitle"))
+  @helper.inputText(jobTitleForm("year"))
+
+  <button type="submit">Search</button>
+ }
+
+
+}

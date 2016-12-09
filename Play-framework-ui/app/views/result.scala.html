@@ -1,0 +1,23 @@
+@(arr: Array[Array[String]], jobTitle:String, year:Int)(implicit messages: Messages)
+@main("Result") {
+    <center><h1 style="color:green">Result for @jobTitle in year @year</h1></center>
+    <table style="width:100%" border="1px solid black">
+        <tr>
+            <th>Job Title</th>
+            <th>Year</th>
+            <th>Base Pay</th>
+            <th>Overtime Pay</th>
+            <th>Other Pay</th>
+            <th>Benefits</th>
+            <th>Total Pay</th>
+            <th>Total Benefits</th>
+        </tr>
+        @for(result <- arr){ 
+            <tr> 
+                @for(tem <- result){ 
+                    <th>@tem</th> 
+                } 
+            </tr> 
+        }
+    </table>
+}
