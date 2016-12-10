@@ -22,7 +22,7 @@ object Logistic {
           LabeledPoint(parts(0).toDouble, Vectors.dense(parts.slice(1,5).map(x => x.toDouble)))
       }
 
-    val splits = parsedData.randomSplit(Array(0.75, 0.25), seed = 11L)
+    val splits = parsedData.randomSplit(Array(0.8, 0.2), seed = 11L)
     val trainingData = splits(0)
     val testData = splits(1)
     val model=new LogisticRegressionWithLBFGS().setNumClasses(2).run(trainingData)
